@@ -274,7 +274,7 @@ class WebSocketManager {
 
 /// Provider for WebSocket manager
 @riverpod
-WebSocketManager webSocketManager(WebSocketManagerRef ref, String url) {
+WebSocketManager webSocketManager(Ref ref, String url) {
   final manager = WebSocketManager(url: url);
   ref.onDispose(() => manager.dispose());
   return manager;

@@ -33,7 +33,7 @@ class RouteNames {
 
 /// App router provider
 @riverpod
-GoRouter appRouter(AppRouterRef ref) {
+GoRouter appRouter(Ref ref) {
   return GoRouter(
     initialLocation: RoutePaths.dashboard,
     debugLogDiagnostics: true,
