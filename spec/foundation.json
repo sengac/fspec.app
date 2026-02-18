@@ -1,0 +1,267 @@
+{
+  "version": "2.0.0",
+  "project": {
+    "name": "fspec Mobile",
+    "vision": "A Flutter-based mobile companion app that enables developers to manage multiple fspec projects on-the-go, connecting via WebSocket bridges to actively running fspec instances for real-time project visibility and lightweight task management from anywhere.",
+    "projectType": "mobile-app"
+  },
+  "problemSpace": {
+    "primaryProblem": {
+      "title": "Developers lose visibility into fspec projects when away from their workstations",
+      "description": "Developers practicing ACDD with fspec need real-time visibility into their project state, work unit status, and task progress. Currently, fspec is a CLI tool tied to development machines, requiring terminal access to check boards, manage work units, or review specifications. When in meetings, commuting, or away from their desk, developers lose connection to their project workflow, making it difficult to plan ahead, update priorities, or stay informed about multi-project status across different machines.",
+      "impact": "high"
+    }
+  },
+  "solutionSpace": {
+    "overview": "A Flutter mobile application that connects to a cloud relay server via WebSocket. Each fspec instance (running on developer workstations) also connects to the same relay server using the existing Bridge tool. The relay server routes messages between the mobile app and fspec instances, enabling bidirectional communication: viewing real-time StreamChunks (text, thinking, tool calls) and sending input/control messages. The mobile app maintains connections to multiple relay channels (one per fspec instance), with each channel potentially having multiple fspec sessions connected. This extends the proven Telegram bridge architecture (which separates 'input' and 'control' message types) to a multi-instance mobile context.",
+    "capabilities": [
+      {
+        "name": "Relay Connection Management",
+        "description": "Connect to cloud relay server and manage connections to multiple fspec instances"
+      },
+      {
+        "name": "Real-time Stream Display",
+        "description": "Display StreamChunks (text, thinking, tool calls, results) from connected fspec sessions in real-time"
+      },
+      {
+        "name": "Input Injection",
+        "description": "Send text messages and images to fspec sessions via the input channel"
+      },
+      {
+        "name": "Multi-Instance Dashboard",
+        "description": "View and switch between multiple fspec instances on a single dashboard"
+      },
+      {
+        "name": "Session Control",
+        "description": "Send control commands via the control channel - including interrupt, clear, and arbitrary fspec commands (board queries, work unit operations, feature file queries, etc.)"
+      }
+    ]
+  },
+  "personas": [
+    {
+      "name": "Mobile Developer",
+      "description": "A software developer practicing ACDD who wants to stay connected to their fspec projects while away from their workstation",
+      "goals": [
+        "View real-time project status and work unit progress from anywhere"
+      ]
+    },
+    {
+      "name": "Team Lead",
+      "description": "A technical lead who oversees multiple developers and projects, needing visibility across all team fspec instances",
+      "goals": [
+        "Monitor multiple project boards and track team progress across different workstations"
+      ]
+    }
+  ],
+  "eventStorm": {
+    "level": "big_picture",
+    "items": [
+      {
+        "id": 1,
+        "type": "bounded_context",
+        "text": "Relay Server",
+        "color": null,
+        "deleted": false,
+        "createdAt": "2026-02-18T20:35:54.225Z"
+      },
+      {
+        "id": 2,
+        "type": "bounded_context",
+        "text": "Mobile App",
+        "color": null,
+        "deleted": false,
+        "createdAt": "2026-02-18T20:35:58.998Z"
+      },
+      {
+        "id": 3,
+        "type": "aggregate",
+        "text": "Channel",
+        "boundedContextId": 1,
+        "color": "yellow",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:36:03.674Z"
+      },
+      {
+        "id": 4,
+        "type": "aggregate",
+        "text": "MessageBuffer",
+        "boundedContextId": 1,
+        "color": "yellow",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:36:08.261Z"
+      },
+      {
+        "id": 5,
+        "type": "aggregate",
+        "text": "User",
+        "boundedContextId": 1,
+        "color": "yellow",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:36:12.514Z"
+      },
+      {
+        "id": 6,
+        "type": "event",
+        "text": "FspecInstanceConnected",
+        "boundedContextId": 1,
+        "color": "orange",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:36:17.145Z"
+      },
+      {
+        "id": 7,
+        "type": "event",
+        "text": "FspecInstanceDisconnected",
+        "boundedContextId": 1,
+        "color": "orange",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:36:23.406Z"
+      },
+      {
+        "id": 8,
+        "type": "event",
+        "text": "MobileClientConnected",
+        "boundedContextId": 1,
+        "color": "orange",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:36:27.868Z"
+      },
+      {
+        "id": 9,
+        "type": "event",
+        "text": "MobileClientDisconnected",
+        "boundedContextId": 1,
+        "color": "orange",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:36:31.860Z"
+      },
+      {
+        "id": 10,
+        "type": "event",
+        "text": "MessageBuffered",
+        "boundedContextId": 1,
+        "color": "orange",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:36:35.871Z"
+      },
+      {
+        "id": 11,
+        "type": "event",
+        "text": "MessageDelivered",
+        "boundedContextId": 1,
+        "color": "orange",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:36:40.405Z"
+      },
+      {
+        "id": 12,
+        "type": "event",
+        "text": "UserAuthenticated",
+        "boundedContextId": 1,
+        "color": "orange",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:36:44.186Z"
+      },
+      {
+        "id": 13,
+        "type": "command",
+        "text": "RouteMessage",
+        "boundedContextId": 1,
+        "color": "blue",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:36:48.602Z"
+      },
+      {
+        "id": 14,
+        "type": "command",
+        "text": "BufferMessage",
+        "boundedContextId": 1,
+        "color": "blue",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:36:52.791Z"
+      },
+      {
+        "id": 15,
+        "type": "command",
+        "text": "FlushBuffer",
+        "boundedContextId": 1,
+        "color": "blue",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:36:56.802Z"
+      },
+      {
+        "id": 16,
+        "type": "aggregate",
+        "text": "Connection",
+        "boundedContextId": 2,
+        "color": "yellow",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:37:00.486Z"
+      },
+      {
+        "id": 17,
+        "type": "aggregate",
+        "text": "InstanceView",
+        "boundedContextId": 2,
+        "color": "yellow",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:37:05.429Z"
+      },
+      {
+        "id": 18,
+        "type": "event",
+        "text": "ConnectedToRelay",
+        "boundedContextId": 2,
+        "color": "orange",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:37:10.104Z"
+      },
+      {
+        "id": 19,
+        "type": "event",
+        "text": "StreamChunkReceived",
+        "boundedContextId": 2,
+        "color": "orange",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:37:14.261Z"
+      },
+      {
+        "id": 20,
+        "type": "event",
+        "text": "CommandResponseReceived",
+        "boundedContextId": 2,
+        "color": "orange",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:37:18.962Z"
+      },
+      {
+        "id": 21,
+        "type": "command",
+        "text": "SendInput",
+        "boundedContextId": 2,
+        "color": "blue",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:37:22.681Z"
+      },
+      {
+        "id": 22,
+        "type": "command",
+        "text": "SendSessionControl",
+        "boundedContextId": 2,
+        "color": "blue",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:37:26.828Z"
+      },
+      {
+        "id": 23,
+        "type": "command",
+        "text": "SendCommand",
+        "boundedContextId": 2,
+        "color": "blue",
+        "deleted": false,
+        "createdAt": "2026-02-18T20:37:31.139Z"
+      }
+    ],
+    "nextItemId": 24
+  }
+}

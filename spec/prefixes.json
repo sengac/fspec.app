@@ -1,0 +1,14 @@
+{
+  "prefixes": {
+    "FOUND": {
+      "prefix": "FOUND",
+      "description": "Foundation Event Storm tasks",
+      "createdAt": "2026-02-18T20:19:20.687Z"
+    },
+    "SETUP": {
+      "prefix": "SETUP",
+      "description": "Project setup and infrastructure tasks",
+      "createdAt": "2026-02-18T20:49:40.133Z"
+    }
+  }
+}

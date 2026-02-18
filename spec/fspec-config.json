@@ -1,0 +1,13 @@
+{
+  "agent": "claude",
+  "tools": {
+    "test": {
+      "command": "fvm flutter test"
+    },
+    "qualityCheck": {
+      "commands": [
+        "fvm flutter analyze"
+      ]
+    }
+  }
+}

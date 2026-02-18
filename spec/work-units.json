@@ -1,0 +1,210 @@
+{
+  "version": "0.7.1",
+  "meta": {
+    "version": "1.0.0",
+    "lastUpdated": "2026-02-18T21:00:07.594Z"
+  },
+  "workUnits": {
+    "FOUND-001": {
+      "id": "FOUND-001",
+      "title": "Conduct Foundation Event Storm for Foundation",
+      "status": "done",
+      "createdAt": "2026-02-18T20:19:20.688Z",
+      "updatedAt": "2026-02-18T20:41:21.686Z",
+      "stateHistory": [
+        {
+          "state": "backlog",
+          "timestamp": "2026-02-18T20:19:20.688Z"
+        },
+        {
+          "state": "specifying",
+          "timestamp": "2026-02-18T20:35:49.605Z"
+        },
+        {
+          "state": "implementing",
+          "timestamp": "2026-02-18T20:37:58.068Z"
+        },
+        {
+          "state": "validating",
+          "timestamp": "2026-02-18T20:38:02.005Z"
+        },
+        {
+          "state": "done",
+          "timestamp": "2026-02-18T20:38:05.778Z"
+        }
+      ],
+      "description": "Complete the foundation by capturing domain architecture through Foundation Event Storm.\n\nUse these commands to populate foundation.json eventStorm field:\n- fspec add-foundation-bounded-context <name>\n- fspec add-aggregate-to-foundation <context> <aggregate>\n- fspec add-domain-event-to-foundation <context> <event>\n- fspec show-foundation-event-storm\n\nWhy this matters:\n- Establishes bounded contexts for domain-driven design\n- Enables tag ontology generation from domain model\n- Provides foundation for architectural documentation\n- Supports EXMAP-004 tag discovery workflow\n\nSee spec/CLAUDE.md \"Foundation Event Storm\" section for detailed guidance.",
+      "type": "task",
+      "rules": [],
+      "examples": [],
+      "questions": [],
+      "architectureNotes": [],
+      "nextRuleId": 0,
+      "nextExampleId": 0,
+      "nextQuestionId": 0,
+      "nextNoteId": 0,
+      "updated": "2026-02-18T20:38:05.778Z",
+      "attachments": [
+        "spec/attachments/FOUND-001/architecture-notes-part1.md",
+        "spec/attachments/FOUND-001/architecture-notes-part2.md",
+        "spec/attachments/FOUND-001/architecture-notes-part3.md",
+        "spec/attachments/FOUND-001/architecture-notes-part4.md",
+        "spec/attachments/FOUND-001/architecture-notes-part5.md"
+      ]
+    },
+    "SETUP-001": {
+      "id": "SETUP-001",
+      "title": "Set up Flutter app with modern 2026 architecture",
+      "type": "task",
+      "status": "done",
+      "createdAt": "2026-02-18T20:49:44.049Z",
+      "updatedAt": "2026-02-18T21:00:07.598Z",
+      "description": "Initialize the fspec Mobile Flutter application with a production-ready architecture using modern best practices.",
+      "children": [],
+      "stateHistory": [
+        {
+          "state": "specifying",
+          "timestamp": "2026-02-18T20:49:56.900Z"
+        },
+        {
+          "state": "implementing",
+          "timestamp": "2026-02-18T20:51:33.830Z"
+        },
+        {
+          "state": "validating",
+          "timestamp": "2026-02-18T20:59:58.754Z"
+        },
+        {
+          "state": "done",
+          "timestamp": "2026-02-18T21:00:07.598Z"
+        }
+      ],
+      "rules": [
+        {
+          "id": 0,
+          "text": "Use FVM (Flutter Version Manager) for version management - install via `brew tap leoafarias/fvm && brew install fvm`",
+          "deleted": false,
+          "createdAt": "2026-02-18T20:50:00.776Z"
+        },
+        {
+          "id": 1,
+          "text": "Use Riverpod 2.6+ for state management with code generation (flutter_riverpod, riverpod_annotation, riverpod_generator)",
+          "deleted": false,
+          "createdAt": "2026-02-18T20:50:02.558Z"
+        },
+        {
+          "id": 2,
+          "text": "Use GoRouter 14.8+ for type-safe navigation",
+          "deleted": false,
+          "createdAt": "2026-02-18T20:50:02.716Z"
+        },
+        {
+          "id": 3,
+          "text": "Use Freezed 3.0+ for immutable state classes",
+          "deleted": false,
+          "createdAt": "2026-02-18T20:50:03.354Z"
+        },
+        {
+          "id": 4,
+          "text": "Use Dio 5.8+ for HTTP/WebSocket networking",
+          "deleted": false,
+          "createdAt": "2026-02-18T20:50:04.033Z"
+        },
+        {
+          "id": 5,
+          "text": "Use Clean Architecture with feature-based folder structure (data/domain/presentation layers)",
+          "deleted": false,
+          "createdAt": "2026-02-18T20:50:04.831Z"
+        },
+        {
+          "id": 6,
+          "text": "Configure stitch-mcp for Google Stitch integration - requires Google Cloud project with Stitch API enabled",
+          "deleted": false,
+          "createdAt": "2026-02-18T20:50:09.520Z"
+        },
+        {
+          "id": 7,
+          "text": "Use dev/staging/prod flavors for environment management",
+          "deleted": false,
+          "createdAt": "2026-02-18T20:50:10.336Z"
+        },
+        {
+          "id": 8,
+          "text": "Use Material 3 design with Google Fonts 6.2+",
+          "deleted": false,
+          "createdAt": "2026-02-18T20:50:11.358Z"
+        }
+      ],
+      "nextRuleId": 9,
+      "examples": [
+        {
+          "id": 0,
+          "text": "Flutter SDK installed via FVM with latest stable version (3.32+)",
+          "deleted": false,
+          "createdAt": "2026-02-18T20:50:12.312Z"
+        },
+        {
+          "id": 1,
+          "text": "Project created with `flutter create --org com.fspec fspec_mobile`",
+          "deleted": false,
+          "createdAt": "2026-02-18T20:50:13.074Z"
+        },
+        {
+          "id": 2,
+          "text": "Running `flutter doctor` shows all green checkmarks for iOS and Android",
+          "deleted": false,
+          "createdAt": "2026-02-18T20:50:14.261Z"
+        }
+      ],
+      "nextExampleId": 3,
+      "architectureNotes": [
+        {
+          "id": 0,
+          "text": "SYSTEM REQUIREMENTS: macOS with Homebrew, Xcode (for iOS), Android Studio (for Android), VS Code or Android Studio IDE",
+          "deleted": false,
+          "createdAt": "2026-02-18T20:50:18.863Z"
+        },
+        {
+          "id": 1,
+          "text": "GOOGLE STITCH MCP: Requires `gcloud` CLI, Google Cloud project, and `gcloud beta services mcp enable stitch.googleapis.com`",
+          "deleted": false,
+          "createdAt": "2026-02-18T20:50:20.286Z"
+        },
+        {
+          "id": 2,
+          "text": "STITCH MCP TOOLS: extract_design_context, fetch_screen_code, fetch_screen_image, generate_screen_from_text, create_project, list_projects, list_screens",
+          "deleted": false,
+          "createdAt": "2026-02-18T20:50:22.032Z"
+        },
+        {
+          "id": 3,
+          "text": "REFERENCE TEMPLATE: https://github.com/Erengun/Flutter-Riverpod-Quickstart-Template - 2025 Edition production-ready template",
+          "deleted": false,
+          "createdAt": "2026-02-18T20:50:23.402Z"
+        }
+      ],
+      "nextNoteId": 4,
+      "attachments": [
+        "spec/attachments/SETUP-001/flutter-setup-guide.md"
+      ],
+      "questions": [],
+      "nextQuestionId": 0,
+      "updated": "2026-02-18T21:00:07.598Z"
+    }
+  },
+  "states": {
+    "backlog": [],
+    "specifying": [],
+    "testing": [],
+    "implementing": [],
+    "validating": [],
+    "done": [
+      "SETUP-001",
+      "FOUND-001"
+    ],
+    "blocked": []
+  },
+  "prefixCounters": {
+    "SETUP": 1
+  }
+}
