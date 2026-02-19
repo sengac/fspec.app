@@ -11,10 +11,11 @@ void main() {
         child: FspecMobileApp(),
       ),
     );
+    await tester.pumpAndSettle();
 
     // Verify dashboard elements
     expect(find.text('fspec Mobile'), findsOneWidget);
     expect(find.text('No fspec instances connected'), findsOneWidget);
-    expect(find.text('Connect to Instance'), findsOneWidget);
+    expect(find.text('Add Connection'), findsWidgets); // Button in empty state and FAB
   });
 }

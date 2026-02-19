@@ -1,0 +1,156 @@
+{
+  "categories": [
+    {
+      "name": "Phase Tags",
+      "description": "Phase identification tags",
+      "required": true,
+      "tags": []
+    },
+    {
+      "name": "Component Tags",
+      "description": "Architectural component tags",
+      "required": true,
+      "tags": [
+        {
+          "name": "@connection",
+          "description": "Connection management component"
+        },
+        {
+          "name": "@dashboard",
+          "description": "Dashboard component"
+        }
+      ]
+    },
+    {
+      "name": "Feature Group Tags",
+      "description": "Functional area tags",
+      "required": true,
+      "tags": [
+        {
+          "name": "@data-layer",
+          "description": "Data layer and persistence features"
+        },
+        {
+          "name": "@ui-layer",
+          "description": "UI presentation layer features"
+        }
+      ]
+    },
+    {
+      "name": "Technical Tags",
+      "description": "Technical concern tags",
+      "required": false,
+      "tags": [
+        {
+          "name": "@error-handling",
+          "description": "Error handling scenarios"
+        },
+        {
+          "name": "@navigation",
+          "description": "Navigation-related scenarios"
+        },
+        {
+          "name": "@permissions",
+          "description": "Permission-related scenarios"
+        },
+        {
+          "name": "@qr-scanner",
+          "description": "QR code scanner related scenarios"
+        },
+        {
+          "name": "@ui",
+          "description": "UI-related scenarios"
+        }
+      ]
+    },
+    {
+      "name": "Platform Tags",
+      "description": "Platform-specific tags",
+      "required": false,
+      "tags": []
+    },
+    {
+      "name": "Priority Tags",
+      "description": "Implementation priority tags",
+      "required": false,
+      "tags": []
+    },
+    {
+      "name": "Status Tags",
+      "description": "Development status tags",
+      "required": false,
+      "tags": []
+    },
+    {
+      "name": "Testing Tags",
+      "description": "Test-related tags",
+      "required": false,
+      "tags": [
+        {
+          "name": "@happy-path",
+          "description": "Marks happy path scenarios"
+        },
+        {
+          "name": "@listing",
+          "description": "Marks list/query scenarios"
+        },
+        {
+          "name": "@persistence",
+          "description": "Marks data persistence scenarios"
+        },
+        {
+          "name": "@validation",
+          "description": "Marks validation/error scenarios"
+        }
+      ]
+    },
+    {
+      "name": "Automation Tags",
+      "description": "Automation integration tags",
+      "required": false,
+      "tags": []
+    }
+  ],
+  "combinationExamples": [],
+  "usageGuidelines": {
+    "requiredCombinations": {
+      "title": "",
+      "requirements": [],
+      "minimumExample": ""
+    },
+    "recommendedCombinations": {
+      "title": "",
+      "includes": [],
+      "recommendedExample": ""
+    },
+    "orderingConvention": {
+      "title": "",
+      "order": [],
+      "example": ""
+    }
+  },
+  "addingNewTags": {
+    "process": [],
+    "namingConventions": [],
+    "antiPatterns": {
+      "dont": [],
+      "do": []
+    }
+  },
+  "queries": {
+    "title": "",
+    "examples": []
+  },
+  "statistics": {
+    "lastUpdated": "2026-02-19T01:49:57.111Z",
+    "phaseStats": [],
+    "componentStats": [],
+    "featureGroupStats": [],
+    "updateCommand": "fspec tag-stats"
+  },
+  "validation": {
+    "rules": [],
+    "commands": []
+  },
+  "references": []
+}

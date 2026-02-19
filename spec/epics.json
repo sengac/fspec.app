@@ -1,3 +1,21 @@
 {
-  "epics": {}
+  "epics": {
+    "mobile-core": {
+      "id": "mobile-core",
+      "title": "MOBILE",
+      "createdAt": "2026-02-19T00:07:55.708Z",
+      "description": "Core mobile app functionality - connection management, dashboard, and real-time streaming",
+      "workUnits": [
+        "MOBILE-001",
+        "MOBILE-002",
+        "MOBILE-003",
+        "MOBILE-004",
+        "MOBILE-005",
+        "MOBILE-006",
+        "MOBILE-007",
+        "MOBILE-008",
+        "MOBILE-009"
+      ]
+    }
+  }
 }

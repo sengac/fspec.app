@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../features/connection/presentation/screens/connection_screen.dart';
+import '../features/connection/presentation/screens/add_connection_screen.dart';
 
 part 'app_router.g.dart';
 
@@ -13,6 +14,7 @@ class RoutePaths {
 
   static const String dashboard = '/';
   static const String connection = '/connection';
+  static const String addConnection = '/add-connection';
   static const String board = '/board/:instanceId';
   static const String workUnit = '/work-unit/:instanceId/:workUnitId';
   static const String stream = '/stream/:instanceId/:sessionId';
@@ -25,6 +27,7 @@ class RouteNames {
 
   static const String dashboard = 'dashboard';
   static const String connection = 'connection';
+  static const String addConnection = 'addConnection';
   static const String board = 'board';
   static const String workUnit = 'workUnit';
   static const String stream = 'stream';
@@ -47,6 +50,11 @@ GoRouter appRouter(Ref ref) {
         path: RoutePaths.connection,
         name: RouteNames.connection,
         builder: (context, state) => const ConnectionScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.addConnection,
+        name: RouteNames.addConnection,
+        builder: (context, state) => const AddConnectionScreen(),
       ),
       // TODO: Add more routes as features are implemented
       // GoRoute(

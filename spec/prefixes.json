@@ -9,6 +9,16 @@
       "prefix": "SETUP",
       "description": "Project setup and infrastructure tasks",
       "createdAt": "2026-02-18T20:49:40.133Z"
+    },
+    "DESIGN": {
+      "prefix": "DESIGN",
+      "description": "Design tooling and UI generation workflows",
+      "createdAt": "2026-02-18T23:38:46.276Z"
+    },
+    "MOBILE": {
+      "prefix": "MOBILE",
+      "description": "Mobile app features and core functionality",
+      "createdAt": "2026-02-19T00:08:15.215Z"
     }
   }
 }

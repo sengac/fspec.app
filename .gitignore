@@ -102,6 +102,9 @@ coverage/
 .env
 .env.*
 
+# Stitch MCP config (contains API keys)
+.stitch/
+
 # Exceptions to above rules
 !**/ios/**/default.mode1v3
 !**/ios/**/default.mode2v3

@@ -2,7 +2,7 @@
   "version": "0.7.1",
   "meta": {
     "version": "1.0.0",
-    "lastUpdated": "2026-02-18T21:00:07.594Z"
+    "lastUpdated": "2026-02-19T01:44:08.631Z"
   },
   "workUnits": {
     "FOUND-001": {
@@ -190,21 +190,723 @@
       "questions": [],
       "nextQuestionId": 0,
       "updated": "2026-02-18T21:00:07.598Z"
+    },
+    "DESIGN-001": {
+      "id": "DESIGN-001",
+      "title": "Set up Google Stitch integration for UI design workflow",
+      "type": "task",
+      "status": "done",
+      "createdAt": "2026-02-18T23:38:57.120Z",
+      "updatedAt": "2026-02-19T00:08:58.781Z",
+      "description": "Interactively configure Google Stitch (stitch.withgoogle.com) for generating UI designs and converting them to Flutter code. This includes:\n\n1. **Stitch Account Setup**\n   - Create/access Google Stitch at stitch.withgoogle.com\n   - Configure project design system (colors, typography, components)\n\n2. **Stitch MCP Server Integration**\n   - Install and configure Stitch MCP Server for real-time AI integration\n   - Set up connection with development environment (VS Code/Cursor)\n\n3. **Gemini CLI Extension**\n   - Install Gemini CLI extension for terminal-based workflows\n   - Configure AI-driven design prompts aligned with app branding\n\n4. **Agent Skills Configuration**\n   - Set up Design MD skill for design documentation\n   - Configure React Components skill (for conversion reference)\n\n5. **Flutter Conversion Workflow**\n   - Document process for converting Stitch designs to Flutter\n   - Set up AI-assisted React-to-Flutter conversion pipeline\n   - Integrate with existing Riverpod/Freezed architecture\n\n6. **Design System Sync**\n   - Export color palette, typography, and themes from Stitch\n   - Create corresponding Flutter ThemeData and design tokens\n\nResources:\n- Stitch: https://stitch.withgoogle.com\n- Google Developers Blog: https://developers.googleblog.com/en/stitch-a-new-way-to-design-uis/\n- MCP/CLI Guide: https://www.geeky-gadgets.com/google-stitch-mcp-gemini-agent-skills/",
+      "children": [],
+      "stateHistory": [
+        {
+          "state": "specifying",
+          "timestamp": "2026-02-18T23:39:32.076Z"
+        },
+        {
+          "state": "implementing",
+          "timestamp": "2026-02-18T23:39:36.616Z"
+        },
+        {
+          "state": "validating",
+          "timestamp": "2026-02-19T00:08:53.040Z"
+        },
+        {
+          "state": "done",
+          "timestamp": "2026-02-19T00:08:58.782Z"
+        }
+      ],
+      "rules": [],
+      "examples": [],
+      "questions": [],
+      "architectureNotes": [],
+      "nextRuleId": 0,
+      "nextExampleId": 0,
+      "nextQuestionId": 0,
+      "nextNoteId": 0,
+      "updated": "2026-02-19T00:08:58.782Z"
+    },
+    "MOBILE-001": {
+      "id": "MOBILE-001",
+      "title": "Connection Data Model and Local Storage",
+      "type": "story",
+      "status": "done",
+      "createdAt": "2026-02-19T00:08:21.444Z",
+      "updatedAt": "2026-02-19T00:22:56.497Z",
+      "description": "Define the Connection entity (name, relay URL, channel ID, API key, status) and persist connections locally using Hive. This is the foundational data layer that all other features depend on.",
+      "epic": "mobile-core",
+      "children": [],
+      "stateHistory": [
+        {
+          "state": "specifying",
+          "timestamp": "2026-02-19T00:10:49.666Z"
+        },
+        {
+          "state": "testing",
+          "timestamp": "2026-02-19T00:14:28.171Z"
+        },
+        {
+          "state": "implementing",
+          "timestamp": "2026-02-19T00:17:32.489Z"
+        },
+        {
+          "state": "validating",
+          "timestamp": "2026-02-19T00:22:01.406Z"
+        },
+        {
+          "state": "done",
+          "timestamp": "2026-02-19T00:22:56.497Z"
+        }
+      ],
+      "userStory": {
+        "role": "mobile developer",
+        "action": "store and retrieve fspec instance connections locally",
+        "benefit": "my connections persist across app restarts and I can manage multiple instances"
+      },
+      "rules": [
+        {
+          "id": 0,
+          "text": "A Connection must have a unique identifier (UUID)",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:11:06.028Z"
+        },
+        {
+          "id": 1,
+          "text": "A Connection must have a non-empty display name",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:11:11.003Z"
+        },
+        {
+          "id": 2,
+          "text": "A Connection must have a valid relay server URL (https scheme)",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:11:15.240Z"
+        },
+        {
+          "id": 3,
+          "text": "A Connection must have a channel ID",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:11:19.809Z"
+        },
+        {
+          "id": 4,
+          "text": "API key is optional (some relays may not require authentication)",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:11:25.203Z"
+        },
+        {
+          "id": 5,
+          "text": "Connections are persisted locally using Hive encrypted storage",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:11:29.753Z"
+        },
+        {
+          "id": 6,
+          "text": "Connection status tracks: disconnected, connecting, connected, error",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:11:34.381Z"
+        }
+      ],
+      "nextRuleId": 7,
+      "examples": [
+        {
+          "id": 0,
+          "text": "Creating connection with name 'Work MacBook', URL 'https://relay.fspec.dev', channel 'abc-123' succeeds",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:11:40.097Z"
+        },
+        {
+          "id": 1,
+          "text": "Creating connection without API key succeeds (API key is optional)",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:11:44.516Z"
+        },
+        {
+          "id": 2,
+          "text": "Creating connection with empty name fails with validation error",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:11:48.763Z"
+        },
+        {
+          "id": 3,
+          "text": "Creating connection with http:// URL fails (must be https)",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:11:53.680Z"
+        },
+        {
+          "id": 4,
+          "text": "Saved connections are available after app restart",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:11:58.256Z"
+        },
+        {
+          "id": 5,
+          "text": "Updating a connection's name persists the change",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:12:02.923Z"
+        },
+        {
+          "id": 6,
+          "text": "Deleting a connection removes it from storage permanently",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:12:07.644Z"
+        },
+        {
+          "id": 7,
+          "text": "Listing connections returns all saved connections in order of creation",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:12:12.477Z"
+        }
+      ],
+      "nextExampleId": 8,
+      "architectureNotes": [
+        {
+          "id": 0,
+          "text": "Use Freezed for immutable Connection model with JSON serialization. Use Hive with hive_ce for local storage. Create ConnectionRepository with Riverpod provider.",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:12:18.457Z"
+        }
+      ],
+      "nextNoteId": 1,
+      "estimate": 3,
+      "attachments": [
+        "spec/attachments/MOBILE-001/ast-research-existing-code.md"
+      ],
+      "questions": [],
+      "nextQuestionId": 0,
+      "updated": "2026-02-19T00:22:56.497Z"
+    },
+    "MOBILE-002": {
+      "id": "MOBILE-002",
+      "title": "Add Connection Screen",
+      "type": "story",
+      "status": "done",
+      "createdAt": "2026-02-19T00:08:23.069Z",
+      "updatedAt": "2026-02-19T01:06:48.187Z",
+      "description": "UI screen for adding a new fspec instance connection. Form with connection name, relay URL, channel ID, optional API key. Includes QR code scanner for quick setup and connection testing.",
+      "epic": "mobile-core",
+      "children": [],
+      "dependsOn": [
+        "MOBILE-001"
+      ],
+      "attachments": [
+        "spec/attachments/MOBILE-002/add-connection.png",
+        "spec/attachments/MOBILE-002/ast-research-existing-code.md"
+      ],
+      "stateHistory": [
+        {
+          "state": "specifying",
+          "timestamp": "2026-02-19T00:33:14.676Z"
+        },
+        {
+          "state": "testing",
+          "timestamp": "2026-02-19T00:42:26.424Z"
+        },
+        {
+          "state": "implementing",
+          "timestamp": "2026-02-19T00:47:58.852Z"
+        },
+        {
+          "state": "validating",
+          "timestamp": "2026-02-19T01:05:03.668Z"
+        },
+        {
+          "state": "done",
+          "timestamp": "2026-02-19T01:06:48.187Z"
+        }
+      ],
+      "userStory": {
+        "role": "mobile user",
+        "action": "add a new fspec instance connection",
+        "benefit": "monitor and interact with my CLI sessions remotely"
+      },
+      "rules": [
+        {
+          "id": 0,
+          "text": "Connection Name is required and cannot be empty",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:29.914Z"
+        },
+        {
+          "id": 1,
+          "text": "Relay Server URL must use https:// scheme",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:30.683Z"
+        },
+        {
+          "id": 2,
+          "text": "Channel ID is required",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:31.607Z"
+        },
+        {
+          "id": 3,
+          "text": "API Key is optional",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:32.099Z"
+        },
+        {
+          "id": 4,
+          "text": "QR code scanner can auto-populate all form fields from desktop",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:33.118Z"
+        },
+        {
+          "id": 5,
+          "text": "API Key field has a visibility toggle (show/hide password)",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:33.910Z"
+        },
+        {
+          "id": 6,
+          "text": "Cancel button returns to previous screen without saving",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:34.796Z"
+        },
+        {
+          "id": 7,
+          "text": "Save button validates form and persists connection if valid",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:35.720Z"
+        },
+        {
+          "id": 8,
+          "text": "URL scheme format: fspec://connect?n=Name&r=RelayURL&c=ChannelID&k=APIKey (k is optional)",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:36:36.192Z"
+        },
+        {
+          "id": 9,
+          "text": "Invalid QR shows toast and stays on scanner. Missing fields partially fill form with toast to complete manually. Camera denied shows Settings button. Manual entry is always the fallback.",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:38:18.136Z"
+        }
+      ],
+      "nextRuleId": 10,
+      "examples": [
+        {
+          "id": 0,
+          "text": "User enters 'Work MacBook', 'https://relay.fspec.dev', channel 'abc-123' and taps Save - connection is created and user returns to connections list",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:42.051Z"
+        },
+        {
+          "id": 1,
+          "text": "User scans QR code from desktop CLI - all fields auto-populate with connection details",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:42.924Z"
+        },
+        {
+          "id": 2,
+          "text": "User leaves Connection Name empty and taps Save - sees validation error 'Connection name is required'",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:44.122Z"
+        },
+        {
+          "id": 3,
+          "text": "User enters 'http://relay.example.com' as URL and taps Save - sees validation error 'URL must use https'",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:45.219Z"
+        },
+        {
+          "id": 4,
+          "text": "User leaves Channel ID empty and taps Save - sees validation error 'Channel ID is required'",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:45.971Z"
+        },
+        {
+          "id": 5,
+          "text": "User fills form without API key and saves - connection is created successfully (API key optional)",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:47.167Z"
+        },
+        {
+          "id": 6,
+          "text": "User taps Cancel button - returns to previous screen without creating connection",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:47.992Z"
+        },
+        {
+          "id": 7,
+          "text": "User taps eye icon on API Key field - toggles between hidden (dots) and visible text",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:49.033Z"
+        }
+      ],
+      "nextExampleId": 8,
+      "questions": [
+        {
+          "id": 0,
+          "text": "@human: What format is the QR code data? JSON with fields, or a URL scheme?",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:55.633Z",
+          "selected": true,
+          "answered": true,
+          "answer": "URL scheme format: fspec://connect?n=Name&r=RelayURL&c=ChannelID&k=APIKey (k is optional)"
+        },
+        {
+          "id": 1,
+          "text": "@human: Should there be a 'Test Connection' button to verify connectivity before saving?",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:56.620Z",
+          "selected": true,
+          "answered": true,
+          "answer": "No - just Cancel and Save buttons. Connection testing happens elsewhere."
+        },
+        {
+          "id": 2,
+          "text": "@human: What happens if QR code scan fails or contains invalid data?",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:33:57.928Z",
+          "selected": true,
+          "answered": true,
+          "answer": "Invalid QR shows toast and stays on scanner. Missing fields partially fill form with toast to complete manually. Camera denied shows Settings button. Manual entry is always the fallback."
+        }
+      ],
+      "nextQuestionId": 3,
+      "estimate": 5,
+      "architectureNotes": [
+        {
+          "id": 0,
+          "text": "Screen built as AddConnectionScreen widget using Riverpod for state. Form uses Flutter Form widget with TextFormField validators. QR scanning via mobile_scanner package. Parses fspec:// URL scheme. Saves via ConnectionRepository (from MOBILE-001). Navigation with go_router.",
+          "deleted": false,
+          "createdAt": "2026-02-19T00:39:24.997Z"
+        }
+      ],
+      "nextNoteId": 1,
+      "updated": "2026-02-19T01:06:48.187Z"
+    },
+    "MOBILE-003": {
+      "id": "MOBILE-003",
+      "title": "Instance Dashboard",
+      "type": "story",
+      "status": "done",
+      "createdAt": "2026-02-19T00:08:24.258Z",
+      "updatedAt": "2026-02-19T01:44:08.635Z",
+      "description": "Main dashboard screen listing all configured fspec instance connections. Shows connection status (online/offline/syncing), instance name, project name, and recent activity preview. Supports navigation to instance detail.",
+      "epic": "mobile-core",
+      "children": [],
+      "dependsOn": [
+        "MOBILE-001"
+      ],
+      "attachments": [
+        "spec/attachments/MOBILE-003/dashboard-thumbnail.png",
+        "spec/attachments/MOBILE-003/ast-research-connection-model.md"
+      ],
+      "stateHistory": [
+        {
+          "state": "specifying",
+          "timestamp": "2026-02-19T01:21:39.629Z"
+        },
+        {
+          "state": "testing",
+          "timestamp": "2026-02-19T01:35:41.424Z"
+        },
+        {
+          "state": "implementing",
+          "timestamp": "2026-02-19T01:38:14.403Z"
+        },
+        {
+          "state": "validating",
+          "timestamp": "2026-02-19T01:43:42.301Z"
+        },
+        {
+          "state": "done",
+          "timestamp": "2026-02-19T01:44:08.635Z"
+        }
+      ],
+      "userStory": {
+        "role": "mobile app user",
+        "action": "view a dashboard of all my fspec instance connections",
+        "benefit": "quickly see status and activity across all my projects"
+      },
+      "rules": [
+        {
+          "id": 0,
+          "text": "Each instance card shows: instance name, connection status (online/offline/syncing), time since last activity, and project name",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:22:02.872Z"
+        },
+        {
+          "id": 1,
+          "text": "Each instance card shows an activity preview with the most recent AI output, error, or status message",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:22:04.111Z"
+        },
+        {
+          "id": 2,
+          "text": "Connection status is indicated with colored dots: green for ONLINE, red for OFFLINE, and a distinct indicator for SYNCING",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:22:05.852Z"
+        },
+        {
+          "id": 3,
+          "text": "Instance list auto-refreshes to show real-time status updates",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:22:05.941Z"
+        },
+        {
+          "id": 4,
+          "text": "Tapping an instance card navigates to the instance detail view",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:22:06.816Z"
+        },
+        {
+          "id": 5,
+          "text": "Each card has a context-sensitive action button based on instance state (View Details, Retry, Open Staging, etc.)",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:22:08.212Z"
+        },
+        {
+          "id": 6,
+          "text": "connected→ONLINE, disconnected→OFFLINE, connecting→SYNCING, error→OFFLINE (with error indicator)",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:26:41.904Z"
+        },
+        {
+          "id": 7,
+          "text": "Project name received from fspec instance via WebSocket when connected. Store as lastKnownProjectName on Connection model to display when offline.",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:27:49.787Z"
+        },
+        {
+          "id": 8,
+          "text": "Activity preview from WebSocket session stream. Cache on Connection: lastActivityType (aiOutput/error/status), lastActivityContent (truncated preview), lastActivityAt (timestamp for relative display).",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:28:07.447Z"
+        },
+        {
+          "id": 9,
+          "text": "Dashboard displays summary stat showing active instances count",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:32:18.005Z"
+        }
+      ],
+      "nextRuleId": 10,
+      "examples": [
+        {
+          "id": 0,
+          "text": "User opens dashboard with 3 connections: MacBook Pro (online, fspec-core), Ubuntu Server (offline, api-gateway), Development VM (online, mobile-ui) - sees all cards with correct status colors",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:22:14.965Z"
+        },
+        {
+          "id": 1,
+          "text": "MacBook Pro card shows AI OUTPUT SNIPPET: 'Optimized 3 functions in core module. Reduced latency by 12%...' with 'View Details' button",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:22:17.977Z"
+        },
+        {
+          "id": 2,
+          "text": "Ubuntu Server card shows CRITICAL FAILURE in red: 'Build failed at step 4: dependency conflict...' with 'Retry Deployment' button",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:22:19.497Z"
+        },
+        {
+          "id": 3,
+          "text": "User opens dashboard with no connections configured - sees empty state with prompt to add first connection",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:22:20.515Z"
+        },
+        {
+          "id": 4,
+          "text": "User taps on MacBook Pro card - navigates to instance detail view for that connection",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:22:21.637Z"
+        },
+        {
+          "id": 5,
+          "text": "User sees summary stat showing '3' active instances at top of screen",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:32:25.192Z"
+        }
+      ],
+      "nextExampleId": 6,
+      "questions": [
+        {
+          "id": 0,
+          "text": "@human: The Connection model has status enum (disconnected/connecting/connected/error) but design shows ONLINE/OFFLINE/SYNCING. How should these map?",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:22:29.534Z",
+          "selected": true,
+          "answered": true,
+          "answer": "connected→ONLINE, disconnected→OFFLINE, connecting→SYNCING, error→OFFLINE (with error indicator)"
+        },
+        {
+          "id": 1,
+          "text": "@human: Connection model has no projectName field - where does the project name displayed on cards come from?",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:22:30.661Z",
+          "selected": true,
+          "answered": true,
+          "answer": "Project name received from fspec instance via WebSocket when connected. Store as lastKnownProjectName on Connection model to display when offline."
+        },
+        {
+          "id": 2,
+          "text": "@human: Activity preview data (AI output snippets, errors, status messages) - where does this come from? Need a separate activity/message model?",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:22:31.909Z",
+          "selected": true,
+          "answered": true,
+          "answer": "Activity preview from WebSocket session stream. Cache on Connection: lastActivityType (aiOutput/error/status), lastActivityContent (truncated preview), lastActivityAt (timestamp for relative display)."
+        },
+        {
+          "id": 3,
+          "text": "@human: What defines 'failed jobs' for the summary stat? Is this related to CRITICAL FAILURE messages?",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:22:33.308Z",
+          "selected": true,
+          "answered": true,
+          "answer": "Deferred - failed jobs stat not needed for initial implementation. Can add later if required."
+        }
+      ],
+      "nextQuestionId": 4,
+      "estimate": 5,
+      "architectureNotes": [
+        {
+          "id": 0,
+          "text": "Extend Connection model with fields: lastKnownProjectName, lastActivityType (enum: aiOutput/error/status), lastActivityContent, lastActivityAt",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:34:29.582Z"
+        },
+        {
+          "id": 1,
+          "text": "Create DashboardScreen widget with Riverpod provider watching connection list from repository",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:34:34.092Z"
+        },
+        {
+          "id": 2,
+          "text": "Create InstanceCard widget displaying status indicator, project name, activity preview, and context-sensitive action button",
+          "deleted": false,
+          "createdAt": "2026-02-19T01:34:38.282Z"
+        }
+      ],
+      "nextNoteId": 3,
+      "updated": "2026-02-19T01:44:08.635Z"
+    },
+    "MOBILE-004": {
+      "id": "MOBILE-004",
+      "title": "WebSocket Relay Connection",
+      "type": "story",
+      "status": "backlog",
+      "createdAt": "2026-02-19T00:08:25.851Z",
+      "updatedAt": "2026-02-19T00:08:43.883Z",
+      "description": "Establish and maintain WebSocket connection to the relay server. Handle connection lifecycle (connect, disconnect, reconnect), authentication handshake, and connection state management with Riverpod.",
+      "epic": "mobile-core",
+      "children": [],
+      "dependsOn": [
+        "MOBILE-001"
+      ]
+    },
+    "MOBILE-005": {
+      "id": "MOBILE-005",
+      "title": "Kanban Board View",
+      "type": "story",
+      "status": "backlog",
+      "createdAt": "2026-02-19T00:08:27.777Z",
+      "updatedAt": "2026-02-19T00:09:06.204Z",
+      "description": "Display the fspec Kanban board for a connected instance. Shows columns (Backlog, Specifying, Testing, Implementing, Validating, Done, Blocked) with work unit cards. Horizontal swipe between columns. Sends 'board' command via relay.",
+      "epic": "mobile-core",
+      "children": [],
+      "dependsOn": [
+        "MOBILE-004"
+      ],
+      "attachments": [
+        "spec/attachments/MOBILE-005/kanban-board.png"
+      ]
+    },
+    "MOBILE-006": {
+      "id": "MOBILE-006",
+      "title": "Work Unit Detail View",
+      "type": "story",
+      "status": "backlog",
+      "createdAt": "2026-02-19T00:08:29.540Z",
+      "updatedAt": "2026-02-19T00:09:07.326Z",
+      "description": "Display full work unit details including Example Mapping data. Shows ID, title, type, status, story points, user story, rules (blue), examples (green), questions (red), and architecture notes. Supports viewing but not editing in v1.",
+      "epic": "mobile-core",
+      "children": [],
+      "dependsOn": [
+        "MOBILE-005"
+      ],
+      "attachments": [
+        "spec/attachments/MOBILE-006/work-unit-detail.png"
+      ]
+    },
+    "MOBILE-007": {
+      "id": "MOBILE-007",
+      "title": "Session Stream Display",
+      "type": "story",
+      "status": "backlog",
+      "createdAt": "2026-02-19T00:08:31.465Z",
+      "updatedAt": "2026-02-19T00:09:08.050Z",
+      "description": "Real-time display of AI session output. Shows StreamChunks: text responses, thinking blocks (collapsible), tool calls with input/output, and user messages. Subscribes to session via relay and handles chunk streaming.",
+      "epic": "mobile-core",
+      "children": [],
+      "dependsOn": [
+        "MOBILE-004"
+      ],
+      "attachments": [
+        "spec/attachments/MOBILE-007/session-stream.png"
+      ]
+    },
+    "MOBILE-008": {
+      "id": "MOBILE-008",
+      "title": "Input Injection",
+      "type": "story",
+      "status": "backlog",
+      "createdAt": "2026-02-19T00:08:33.604Z",
+      "updatedAt": "2026-02-19T00:08:46.630Z",
+      "description": "Send text messages and images to an active fspec session. Input field at bottom of session stream view with send button and camera icon for image attachment. Messages sent via 'input' message type to relay.",
+      "epic": "mobile-core",
+      "children": [],
+      "dependsOn": [
+        "MOBILE-007"
+      ]
+    },
+    "MOBILE-009": {
+      "id": "MOBILE-009",
+      "title": "Session Control",
+      "type": "story",
+      "status": "backlog",
+      "createdAt": "2026-02-19T00:08:35.230Z",
+      "updatedAt": "2026-02-19T00:08:47.335Z",
+      "description": "Control active fspec sessions with interrupt and clear commands. Emergency interrupt button prominently displayed. Commands sent via 'session_control' message type to relay.",
+      "epic": "mobile-core",
+      "children": [],
+      "dependsOn": [
+        "MOBILE-007"
+      ]
     }
   },
   "states": {
-    "backlog": [],
+    "backlog": [
+      "MOBILE-004",
+      "MOBILE-005",
+      "MOBILE-006",
+      "MOBILE-007",
+      "MOBILE-008",
+      "MOBILE-009"
+    ],
     "specifying": [],
     "testing": [],
     "implementing": [],
     "validating": [],
     "done": [
+      "MOBILE-003",
+      "MOBILE-002",
+      "MOBILE-001",
+      "DESIGN-001",
       "SETUP-001",
       "FOUND-001"
     ],
     "blocked": []
   },
   "prefixCounters": {
-    "SETUP": 1
+    "SETUP": 1,
+    "DESIGN": 1,
+    "MOBILE": 9
   }
 }
