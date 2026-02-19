@@ -1,0 +1,136 @@
+{
+  "scenarios": [
+    {
+      "name": "Send text message to session",
+      "testMappings": [
+        {
+          "file": "test/features/session/input_injection_test.dart",
+          "lines": "45-83",
+          "implMappings": [
+            {
+              "file": "lib/features/session/presentation/widgets/input_bar.dart",
+              "lines": "1-352"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Send button disabled for empty input",
+      "testMappings": [
+        {
+          "file": "test/features/session/input_injection_test.dart",
+          "lines": "87-109",
+          "implMappings": [
+            {
+              "file": "lib/features/session/presentation/widgets/input_bar.dart",
+              "lines": "51-74,180-278"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Input field clears after sending",
+      "testMappings": [
+        {
+          "file": "test/features/session/input_injection_test.dart",
+          "lines": "113-140",
+          "implMappings": [
+            {
+              "file": "lib/features/session/presentation/widgets/input_bar.dart",
+              "lines": "164-178"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Open image picker",
+      "testMappings": [
+        {
+          "file": "test/features/session/input_injection_test.dart",
+          "lines": "148-170",
+          "implMappings": [
+            {
+              "file": "lib/features/session/presentation/widgets/input_bar.dart",
+              "lines": "76-105,226-231"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Attach and send image with description",
+      "testMappings": [
+        {
+          "file": "test/features/session/input_injection_test.dart",
+          "lines": "174-238",
+          "implMappings": [
+            {
+              "file": "lib/features/session/presentation/widgets/input_bar.dart",
+              "lines": "14-31,164-178"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Preview multiple attached images",
+      "testMappings": [
+        {
+          "file": "test/features/session/input_injection_test.dart",
+          "lines": "242-282",
+          "implMappings": [
+            {
+              "file": "lib/features/session/presentation/widgets/input_bar.dart",
+              "lines": "199-219,281-352"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Remove attached image before sending",
+      "testMappings": [
+        {
+          "file": "test/features/session/input_injection_test.dart",
+          "lines": "286-323",
+          "implMappings": [
+            {
+              "file": "lib/features/session/presentation/widgets/input_bar.dart",
+              "lines": "158-162,199-219,281-352"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Keyboard adjusts layout",
+      "testMappings": [
+        {
+          "file": "test/features/session/input_injection_test.dart",
+          "lines": "331-357",
+          "implMappings": [
+            {
+              "file": "lib/features/session/presentation/screens/session_stream_screen.dart",
+              "lines": "129-186"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "totalScenarios": 8,
+    "coveredScenarios": 8,
+    "coveragePercent": 100,
+    "testFiles": [
+      "test/features/session/input_injection_test.dart"
+    ],
+    "implFiles": [
+      "lib/features/session/presentation/widgets/input_bar.dart",
+      "lib/features/session/presentation/screens/session_stream_screen.dart"
+    ]
+  }
+}

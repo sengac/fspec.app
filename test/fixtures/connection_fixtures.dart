@@ -67,4 +67,21 @@ class ConnectionFixtures {
       channelId: channelId ?? 'ch-${name.toLowerCase()}',
     );
   }
+
+  /// Connection that is online and ready for relay communication
+  /// Used for: Board view, Work Unit Detail, and any feature requiring active connection
+  static Connection connectedInstance({
+    String name = 'MacBook Pro - fspec-mobile',
+    String projectName = 'fspec-mobile',
+    String channelId = 'channel-connected',
+  }) {
+    return Connection.create(
+      name: name,
+      relayUrl: 'https://relay.fspec.dev',
+      channelId: channelId,
+    ).copyWith(
+      status: ConnectionStatus.connected,
+      lastKnownProjectName: projectName,
+    );
+  }
 }

@@ -1,0 +1,26 @@
+# Maestro flow: Dismiss keyboard and navigate back
+appId: com.fspec.fspecMobile
+
+---
+# Take initial screenshot
+- takeScreenshot: 01_starting_state
+
+# Press the back arrow button (should be in top-left of the screen)
+# First, let's dismiss the keyboard
+- back
+
+# Wait
+- waitForAnimationToEnd
+
+# Take screenshot 
+- takeScreenshot: 02_after_back
+
+# Try tapping back arrow if we're still on form
+- tapOn:
+    point: "7%,8%"
+    
+# Wait for navigation
+- waitForAnimationToEnd
+
+# Take screenshot
+- takeScreenshot: 03_final_state

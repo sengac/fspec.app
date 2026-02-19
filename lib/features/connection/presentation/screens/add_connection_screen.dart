@@ -5,6 +5,7 @@ import '../../data/providers/connection_providers.dart';
 import '../../domain/models/connection.dart';
 import '../../domain/services/qr_code_parser.dart';
 import '../../domain/validators/connection_validators.dart';
+import '../../../dashboard/data/providers/dashboard_providers.dart';
 import '../widgets/labeled_form_field.dart';
 import '../widgets/qr_scanner_cards.dart';
 
@@ -73,6 +74,8 @@ class _AddConnectionScreenState extends ConsumerState<AddConnectionScreen> {
         },
         (_) {
           if (mounted) {
+            // Invalidate the connections provider so dashboard refreshes
+            ref.invalidate(connectionsProvider);
             Navigator.of(context).maybePop();
           }
         },

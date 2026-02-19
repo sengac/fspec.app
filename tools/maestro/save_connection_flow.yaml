@@ -1,0 +1,37 @@
+# Maestro flow: Complete the connection save and test the dashboard
+appId: com.fspec.fspecMobile
+
+---
+# We're already on the Add Connection screen with data filled
+# Dismiss keyboard by tapping outside (on the title area)
+- tapOn:
+    point: "50%,15%"
+
+# Wait a moment for keyboard to dismiss
+- waitForAnimationToEnd
+
+# Take screenshot of form
+- takeScreenshot: 01_form_filled
+
+# Scroll down to see Save button
+- swipe:
+    start: "50%,70%"
+    end: "50%,30%"
+
+# Take screenshot after scroll
+- takeScreenshot: 02_after_scroll
+
+# Tap Save button  
+- tapOn: "Save"
+
+# Wait for navigation
+- waitForAnimationToEnd
+
+# Take screenshot 
+- takeScreenshot: 03_after_save
+
+# Check we're back on dashboard
+- assertVisible: "fspec Mobile"
+
+# Take final screenshot
+- takeScreenshot: 04_final_dashboard

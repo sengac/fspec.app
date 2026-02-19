@@ -1,0 +1,13 @@
+# Explore dashboard and find how to connect
+appId: com.fspec.fspecMobile
+
+---
+# Go back to dashboard
+- back
+- waitForAnimationToEnd
+- takeScreenshot: 01_dashboard
+
+# Look for a connect button or action on the connection card
+# Maybe there's a play/connect button or we need to use long press
+# Let's see the full dashboard first
+- assertVisible: "fspec Mobile"

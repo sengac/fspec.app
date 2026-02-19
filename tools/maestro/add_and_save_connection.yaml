@@ -1,0 +1,52 @@
+# Full flow: Add connection, save it, and verify it appears on dashboard
+appId: com.fspec.fspecMobile
+
+---
+# Make sure we're on dashboard
+- assertVisible: "fspec Mobile"
+- takeScreenshot: 01_start
+
+# Tap Add Connection
+- tapOn: "Add Connection"
+- waitForAnimationToEnd
+- assertVisible: "Add Connection"
+- takeScreenshot: 02_add_form
+
+# Fill Connection Name
+- tapOn:
+    text: "Work MacBook"
+- inputText: "Local Dev Server"
+- takeScreenshot: 03_name_filled
+
+# Fill Relay URL  
+- tapOn:
+    text: "https://"
+- inputText: "http://localhost:8765"
+- takeScreenshot: 04_url_filled
+
+# Fill Channel ID
+- tapOn:
+    text: "e.g. 123e4567-e89b..."
+- inputText: "dev-channel"
+- takeScreenshot: 05_channel_filled
+
+# Dismiss keyboard
+- pressKey: Enter
+- waitForAnimationToEnd
+- takeScreenshot: 06_keyboard_dismissed
+
+# Scroll to reveal Save button
+- swipe:
+    start: "50%,70%"
+    end: "50%,30%"
+- takeScreenshot: 07_after_scroll
+
+# Verify Save button is visible and tap it
+- assertVisible: "Save"
+- tapOn: "Save"
+- waitForAnimationToEnd
+- takeScreenshot: 08_after_save
+
+# Verify we're back on dashboard with the connection
+- assertVisible: "fspec Mobile"
+- takeScreenshot: 09_final_dashboard

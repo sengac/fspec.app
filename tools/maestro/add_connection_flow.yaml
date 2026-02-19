@@ -1,0 +1,54 @@
+# Maestro flow: Add a connection and test the dashboard
+appId: com.fspec.fspecMobile
+
+---
+# Take initial screenshot  
+- takeScreenshot: 01_dashboard_empty
+
+# Tap "Add Connection" button
+- tapOn: "Add Connection"
+
+# Wait for add connection form to appear
+- assertVisible: "Add Connection"
+
+# Take screenshot of add connection form
+- takeScreenshot: 02_add_connection_form
+
+# Fill in Connection Name - tap on the hint text placeholder
+- tapOn:
+    text: "Work MacBook"
+- inputText: "Local Dev Server"
+
+# Tap on Relay Server URL field (hint text)
+- tapOn:
+    text: "https://"
+- inputText: "http://localhost:8765"
+
+# Tap on Channel ID field (hint text)
+- tapOn:
+    text: "e.g. 123e4567-e89b..."
+- inputText: "dev-channel"
+
+# Dismiss keyboard by tapping outside
+- tapOn:
+    point: "50%,20%"
+
+# Take screenshot before saving
+- takeScreenshot: 03_form_filled
+
+# Scroll down to see Save button
+- swipe:
+    start: "50%,80%"
+    end: "50%,30%"
+
+# Tap Save button  
+- tapOn: "Save"
+
+# Wait a bit
+- waitForAnimationToEnd
+
+# Take screenshot after save
+- takeScreenshot: 04_dashboard_after_save
+
+# Check we're back on dashboard
+- assertVisible: "fspec Mobile"

@@ -12,12 +12,24 @@
       "required": true,
       "tags": [
         {
+          "name": "@board",
+          "description": "Board and work unit detail component"
+        },
+        {
           "name": "@connection",
           "description": "Connection management component"
         },
         {
           "name": "@dashboard",
           "description": "Dashboard component"
+        },
+        {
+          "name": "@session",
+          "description": "Session stream and input component"
+        },
+        {
+          "name": "@websocket",
+          "description": "WebSocket connection management component"
         }
       ]
     },
@@ -42,8 +54,16 @@
       "required": false,
       "tags": [
         {
+          "name": "@auto-connect",
+          "description": "Auto-connect on launch scenarios"
+        },
+        {
           "name": "@error-handling",
           "description": "Error handling scenarios"
+        },
+        {
+          "name": "@manual-control",
+          "description": "Manual user control scenarios"
         },
         {
           "name": "@navigation",
@@ -56,6 +76,10 @@
         {
           "name": "@qr-scanner",
           "description": "QR code scanner related scenarios"
+        },
+        {
+          "name": "@reconnection",
+          "description": "Reconnection and connection recovery scenarios"
         },
         {
           "name": "@ui",
@@ -79,13 +103,26 @@
       "name": "Status Tags",
       "description": "Development status tags",
       "required": false,
-      "tags": []
+      "tags": [
+        {
+          "name": "@done",
+          "description": "Feature implementation complete"
+        },
+        {
+          "name": "@wip",
+          "description": "Work in progress - not yet complete"
+        }
+      ]
     },
     {
       "name": "Testing Tags",
       "description": "Test-related tags",
       "required": false,
       "tags": [
+        {
+          "name": "@edge-case",
+          "description": "Marks edge case scenarios"
+        },
         {
           "name": "@happy-path",
           "description": "Marks happy path scenarios"
@@ -142,7 +179,7 @@
     "examples": []
   },
   "statistics": {
-    "lastUpdated": "2026-02-19T01:49:57.111Z",
+    "lastUpdated": "2026-02-19T04:03:47.847Z",
     "phaseStats": [],
     "componentStats": [],
     "featureGroupStats": [],

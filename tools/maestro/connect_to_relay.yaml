@@ -1,0 +1,18 @@
+# Connect to the fake relay and explore the app
+appId: com.fspec.fspecMobile
+
+---
+# Make sure we're on dashboard
+- assertVisible: "fspec Mobile"
+- takeScreenshot: 01_dashboard_with_connections
+
+# Tap Connect button on the first connection
+- tapOn: "Connect"
+- waitForAnimationToEnd
+- takeScreenshot: 02_after_connect
+
+# Wait for connection to establish
+- assertVisible:
+    text: "fspec-mobile"
+    optional: true
+- takeScreenshot: 03_check_status

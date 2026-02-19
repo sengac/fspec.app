@@ -1,0 +1,19 @@
+# Maestro flow: Use back button to return to dashboard
+appId: com.fspec.fspecMobile
+
+---
+# Take current screenshot
+- takeScreenshot: 01_current_state
+
+# Press back button to cancel and return to dashboard
+- tapOn:
+    point: "8%,15%"
+
+# Wait for navigation
+- waitForAnimationToEnd
+
+# Take screenshot of dashboard
+- takeScreenshot: 02_dashboard
+
+# Check if we have any connections shown
+- assertVisible: "fspec Mobile"

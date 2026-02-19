@@ -16,8 +16,11 @@ Architectural component tags
 
 | Tag | Description |
 |-----|-------------|
+| `@board` | Board and work unit detail component |
 | `@connection` | Connection management component |
 | `@dashboard` | Dashboard component |
+| `@session` | Session stream and input component |
+| `@websocket` | WebSocket connection management component |
 
 ### Feature Group Tags (Required)
 
@@ -34,10 +37,13 @@ Technical concern tags
 
 | Tag | Description |
 |-----|-------------|
+| `@auto-connect` | Auto-connect on launch scenarios |
 | `@error-handling` | Error handling scenarios |
+| `@manual-control` | Manual user control scenarios |
 | `@navigation` | Navigation-related scenarios |
 | `@permissions` | Permission-related scenarios |
 | `@qr-scanner` | QR code scanner related scenarios |
+| `@reconnection` | Reconnection and connection recovery scenarios |
 | `@ui` | UI-related scenarios |
 
 ### Platform Tags
@@ -52,12 +58,18 @@ Implementation priority tags
 
 Development status tags
 
+| Tag | Description |
+|-----|-------------|
+| `@done` | Feature implementation complete |
+| `@wip` | Work in progress - not yet complete |
+
 ### Testing Tags
 
 Test-related tags
 
 | Tag | Description |
 |-----|-------------|
+| `@edge-case` | Marks edge case scenarios |
 | `@happy-path` | Marks happy path scenarios |
 | `@listing` | Marks list/query scenarios |
 | `@persistence` | Marks data persistence scenarios |
@@ -81,7 +93,7 @@ Automation integration tags
 
 ## Tag Statistics
 
-_Last updated: 2026-02-19T01:49:57.111Z_
+_Last updated: 2026-02-19T04:03:47.847Z_
 
 **Update Command**: `fspec tag-stats`
 

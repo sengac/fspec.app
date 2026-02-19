@@ -20,12 +20,20 @@ String? validateConnectionName(String? value) {
 /// Returns null if valid, or error message if invalid.
 /// Rules:
 /// - Relay Server URL is required
-/// - URL must use https:// scheme
+/// - URL must use https:// scheme (or http:// for localhost development)
 String? validateRelayUrl(String? value) {
   if (value == null || value.trim().isEmpty) {
     return 'Relay URL is required';
   }
-  if (!value.toLowerCase().startsWith('https://')) {
+  final lower = value.toLowerCase();
+  
+  // Allow http:// for localhost development
+  if (lower.startsWith('http://localhost') || 
+      lower.startsWith('http://127.0.0.1')) {
+    return null;
+  }
+  
+  if (!lower.startsWith('https://')) {
     return 'URL must use https';
   }
   return null;

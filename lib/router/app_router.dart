@@ -5,6 +5,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../features/connection/presentation/screens/connection_screen.dart';
 import '../features/connection/presentation/screens/add_connection_screen.dart';
+import '../features/board/presentation/screens/board_screen.dart';
+import '../features/work_unit/presentation/screens/work_unit_detail_screen.dart';
+import '../features/session/presentation/screens/session_stream_screen.dart';
 
 part 'app_router.g.dart';
 
@@ -56,14 +59,29 @@ GoRouter appRouter(Ref ref) {
         name: RouteNames.addConnection,
         builder: (context, state) => const AddConnectionScreen(),
       ),
-      // TODO: Add more routes as features are implemented
-      // GoRoute(
-      //   path: RoutePaths.board,
-      //   name: RouteNames.board,
-      //   builder: (context, state) => BoardScreen(
-      //     instanceId: state.pathParameters['instanceId']!,
-      //   ),
-      // ),
+      GoRoute(
+        path: RoutePaths.board,
+        name: RouteNames.board,
+        builder: (context, state) => BoardScreen(
+          instanceId: state.pathParameters['instanceId']!,
+        ),
+      ),
+      GoRoute(
+        path: RoutePaths.workUnit,
+        name: RouteNames.workUnit,
+        builder: (context, state) => WorkUnitDetailScreen(
+          instanceId: state.pathParameters['instanceId']!,
+          workUnitId: state.pathParameters['workUnitId']!,
+        ),
+      ),
+      GoRoute(
+        path: RoutePaths.stream,
+        name: RouteNames.stream,
+        builder: (context, state) => SessionStreamScreen(
+          connectionId: state.pathParameters['instanceId']!,
+          sessionId: state.pathParameters['sessionId']!,
+        ),
+      ),
     ],
     errorBuilder: (context, state) => Scaffold(
       body: Center(

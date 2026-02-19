@@ -4,15 +4,30 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../router/app_router.dart';
 import '../../../connection/domain/models/connection.dart';
+import '../../../connection/data/services/relay_connection_service.dart';
 import '../../data/providers/dashboard_providers.dart';
 import '../widgets/instance_card.dart';
 
 /// Dashboard screen - shows connected fspec instances
-class DashboardScreen extends ConsumerWidget {
+class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends ConsumerState<DashboardScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Auto-connect on app launch
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(relayConnectionServiceProvider).autoConnectAll();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('fspec Mobile'),
@@ -26,7 +41,7 @@ class DashboardScreen extends ConsumerWidget {
       ),
       body: const _DashboardBody(),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.push(RoutePaths.connection),
+        onPressed: () => context.push(RoutePaths.addConnection),
         icon: const Icon(Icons.add),
         label: const Text('Add Connection'),
       ),
@@ -92,6 +107,9 @@ class _DashboardBody extends ConsumerWidget {
                     return InstanceCard(
                       connection: connection,
                       onTap: () => _navigateToDetail(context, connection),
+                      onConnect: () => _connect(context, ref, connection),
+                      onDisconnect: () => _disconnect(ref, connection),
+                      onMoreOptions: () => _editConnection(context, connection),
                     );
                   },
                   childCount: connections.length,
@@ -109,7 +127,41 @@ class _DashboardBody extends ConsumerWidget {
   }
 
   void _navigateToDetail(BuildContext context, Connection connection) {
-    context.push('/instance/${connection.id}');
+    // Navigate to board screen for this connection/instance
+    context.push('/board/${connection.id}');
+  }
+
+  Future<void> _connect(BuildContext context, WidgetRef ref, Connection connection) async {
+    final service = ref.read(relayConnectionServiceProvider);
+    final result = await service.connect(connection);
+    if (!result.success && context.mounted) {
+      _showErrorSnackbar(context, result);
+    }
+  }
+
+  Future<void> _disconnect(WidgetRef ref, Connection connection) async {
+    final service = ref.read(relayConnectionServiceProvider);
+    await service.disconnect(connection.id);
+  }
+
+  void _editConnection(BuildContext context, Connection connection) {
+    context.push('/connection/${connection.id}');
+  }
+
+  void _showErrorSnackbar(BuildContext context, dynamic result) {
+    final message = switch (result.errorCode) {
+      _ when result.errorCode.toString().contains('invalidChannel') => 'Channel not found',
+      _ when result.errorCode.toString().contains('invalidApiKey') => 'Authentication failed',
+      _ when result.errorCode.toString().contains('rateLimited') => 'Rate limited - try again later',
+      _ => result.errorMessage ?? 'Connection failed',
+    };
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Theme.of(context).colorScheme.error,
+      ),
+    );
   }
 }
 
@@ -191,7 +243,7 @@ class _EmptyState extends StatelessWidget {
           ),
           const SizedBox(height: 32),
           FilledButton.icon(
-            onPressed: () => context.push(RoutePaths.connection),
+            onPressed: () => context.push(RoutePaths.addConnection),
             icon: const Icon(Icons.add),
             label: const Text('Add Connection'),
           ),

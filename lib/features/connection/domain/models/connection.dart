@@ -49,6 +49,9 @@ abstract class Connection with _$Connection {
     /// Timestamp when the connection was created
     DateTime? createdAt,
 
+    /// Whether to auto-connect on app launch
+    @Default(false) bool autoConnect,
+
     /// Cached project name from fspec instance (received via WebSocket)
     String? lastKnownProjectName,
 
@@ -94,7 +97,11 @@ abstract class Connection with _$Connection {
       return 'Relay URL is required';
     }
 
-    if (!relayUrl.toLowerCase().startsWith('https://')) {
+    final lowerUrl = relayUrl.toLowerCase();
+    // Allow http:// for localhost development
+    final isLocalhost = lowerUrl.startsWith('http://localhost') ||
+        lowerUrl.startsWith('http://127.0.0.1');
+    if (!isLocalhost && !lowerUrl.startsWith('https://')) {
       return 'URL must use HTTPS';
     }
 

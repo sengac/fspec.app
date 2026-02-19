@@ -1,0 +1,20 @@
+# Tap on connected instance to navigate to board
+appId: com.fspec.fspecMobile
+
+---
+# Make sure we're on dashboard with a connected instance
+- assertVisible: "fspec Mobile"
+- takeScreenshot: 01_dashboard
+
+# Tap on the card header area (where the name is) - higher up to avoid buttons
+- tapOn:
+    point: "30%,47%"
+- waitForAnimationToEnd
+- takeScreenshot: 02_after_tap
+
+# Wait a moment for navigation and board loading
+- extendedWaitUntil:
+    visible:
+      text: "Kanban Board"
+    timeout: 5000
+- takeScreenshot: 03_board_loaded

@@ -1,0 +1,17 @@
+# Just tap back arrow and see where we go
+appId: com.fspec.fspecMobile
+
+---
+# Take current screenshot
+- takeScreenshot: 01_current
+
+# Tap back arrow
+- tapOn:
+    point: "7%,8%"
+- waitForAnimationToEnd
+- takeScreenshot: 02_after_back
+
+# Check if this is the dashboard
+- assertVisible:
+    text: "fspec Mobile"
+    optional: true

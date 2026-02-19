@@ -9,18 +9,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fspec_mobile/features/connection/data/providers/connection_providers.dart';
+import 'package:fspec_mobile/features/connection/data/services/relay_connection_service.dart';
 import 'package:fspec_mobile/features/connection/domain/models/connection.dart';
 import 'package:fspec_mobile/features/dashboard/presentation/screens/dashboard_screen.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../fixtures/dashboard_fixtures.dart';
 import '../../fixtures/in_memory_connection_repository.dart';
+import '../../fixtures/fake_relay_connection_service.dart';
 
 void main() {
   late InMemoryConnectionRepository repository;
+  late FakeRelayConnectionService fakeService;
 
   setUp(() {
     repository = InMemoryConnectionRepository();
+    fakeService = FakeRelayConnectionService(repository);
   });
 
   Widget createTestWidget({Widget? child, GoRouter? router}) {
@@ -55,6 +59,7 @@ void main() {
     return ProviderScope(
       overrides: [
         connectionRepositoryProvider.overrideWithValue(repository),
+        relayConnectionServiceProvider.overrideWithValue(fakeService),
       ],
       child: MaterialApp.router(
         routerConfig: testRouter,
@@ -91,7 +96,7 @@ void main() {
     });
 
     group('Scenario: Instance card shows AI output activity preview', () {
-      testWidgets('should display AI output preview with View Details button', (tester) async {
+      testWidgets('should display AI output preview with Disconnect button', (tester) async {
         // @step Given I have a connection "MacBook Pro" with status "connected"
         // @step And the connection has activity type "aiOutput"
         // @step And the activity content is "Optimized 3 functions in core module. Reduced latency by 12%..."
@@ -110,13 +115,13 @@ void main() {
         // @step And the card should display the activity preview text
         expect(find.textContaining('Optimized 3 functions'), findsOneWidget);
 
-        // @step And the card should have a "View Details" action button
-        expect(find.text('View Details'), findsOneWidget);
+        // @step And the card should have a "Disconnect" action button (connected state)
+        expect(find.text('Disconnect'), findsOneWidget);
       });
     });
 
     group('Scenario: Instance card shows error activity preview', () {
-      testWidgets('should display error preview with Retry button', (tester) async {
+      testWidgets('should display error preview with Retry Connection button', (tester) async {
         // @step Given I have a connection "Ubuntu Server" with status "error"
         // @step And the connection has activity type "error"
         // @step And the activity content is "Build failed at step 4: dependency conflict..."
@@ -135,8 +140,8 @@ void main() {
         // @step And the card should display the error preview text
         expect(find.textContaining('Build failed at step 4'), findsOneWidget);
 
-        // @step And the card should have a "Retry Deployment" action button
-        expect(find.text('Retry Deployment'), findsOneWidget);
+        // @step And the card should have a "Retry Connection" action button (error state)
+        expect(find.text('Retry Connection'), findsOneWidget);
       });
     });
 

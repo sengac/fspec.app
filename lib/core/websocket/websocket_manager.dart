@@ -5,88 +5,34 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:logger/logger.dart';
 
-import '../../constants/app_constants.dart';
+import 'websocket_state.dart';
+import 'websocket_message.dart';
+import 'reconnect_strategy.dart';
+
+export 'websocket_state.dart';
+export 'websocket_message.dart';
+export 'reconnect_strategy.dart';
 
 part 'websocket_manager.g.dart';
 
-/// WebSocket connection state
-enum WebSocketState {
-  disconnected,
-  connecting,
-  connected,
-  reconnecting,
-  error,
-}
-
-/// WebSocket message types matching fspec protocol
-enum MessageType {
-  // Outbound: mobile → relay → fspec
-  input,
-  sessionControl,
-  command,
-
-  // Inbound: fspec → relay → mobile
-  chunk,
-  commandResponse,
-  connected,
-
-  // System
-  error,
-  ping,
-  pong,
-}
-
-/// WebSocket message wrapper
-class WebSocketMessage {
-  final MessageType type;
-  final Map<String, dynamic> data;
-  final String? requestId;
-  final String? sessionId;
-  final String? instanceId;
-
-  WebSocketMessage({
-    required this.type,
-    required this.data,
-    this.requestId,
-    this.sessionId,
-    this.instanceId,
-  });
-
-  Map<String, dynamic> toJson() => {
-        'type': type.name,
-        'data': data,
-        if (requestId != null) 'request_id': requestId,
-        if (sessionId != null) 'session_id': sessionId,
-        if (instanceId != null) 'instance_id': instanceId,
-      };
-
-  factory WebSocketMessage.fromJson(Map<String, dynamic> json) {
-    return WebSocketMessage(
-      type: MessageType.values.firstWhere(
-        (t) => t.name == json['type'],
-        orElse: () => MessageType.error,
-      ),
-      data: json['data'] as Map<String, dynamic>? ?? {},
-      requestId: json['request_id'] as String?,
-      sessionId: json['session_id'] as String?,
-      instanceId: json['instance_id'] as String?,
-    );
-  }
-}
-
 /// WebSocket connection manager
+///
+/// Manages WebSocket lifecycle, authentication handshake, reconnection
+/// with exponential backoff, and ping/pong heartbeat.
 class WebSocketManager {
   final Logger _logger = Logger();
   final String url;
+  final ReconnectStrategy _reconnectStrategy = ReconnectStrategy();
 
   WebSocketChannel? _channel;
   WebSocketState _state = WebSocketState.disconnected;
-  int _reconnectAttempts = 0;
-  Timer? _reconnectTimer;
   Timer? _pingTimer;
+  bool _authFailed = false;
+  Completer<AuthResult>? _authCompleter;
 
   final _stateController = StreamController<WebSocketState>.broadcast();
   final _messageController = StreamController<WebSocketMessage>.broadcast();
+  final _authResultController = StreamController<AuthResult>.broadcast();
 
   WebSocketManager({required this.url});
 
@@ -99,29 +45,29 @@ class WebSocketManager {
   /// Stream of incoming messages
   Stream<WebSocketMessage> get messageStream => _messageController.stream;
 
+  /// Stream of auth results
+  Stream<AuthResult> get authResultStream => _authResultController.stream;
+
   /// Connect to the WebSocket server
   Future<void> connect() async {
     if (_state == WebSocketState.connecting ||
+        _state == WebSocketState.authenticating ||
         _state == WebSocketState.connected) {
       return;
     }
 
     _updateState(WebSocketState.connecting);
+    _authFailed = false;
+    
+    _logger.i('Connecting to WebSocket: $url');
 
     try {
       _channel = WebSocketChannel.connect(Uri.parse(url));
-
       await _channel!.ready;
+      _reconnectStrategy.reset();
 
-      _updateState(WebSocketState.connected);
-      _reconnectAttempts = 0;
-      _startPingTimer();
-
-      _channel!.stream.listen(
-        _onMessage,
-        onError: _onError,
-        onDone: _onDone,
-      );
+      _channel!.stream.listen(_onMessage, onError: _onError, onDone: _onDone);
+      _updateState(WebSocketState.authenticating);
     } catch (e) {
       _logger.e('WebSocket connection failed', error: e);
       _updateState(WebSocketState.error);
@@ -129,10 +75,53 @@ class WebSocketManager {
     }
   }
 
+  /// Connect and authenticate with the relay server
+  Future<AuthResult> connectAndAuthenticate({
+    required String channelId,
+    String? apiKey,
+  }) async {
+    _authCompleter = Completer<AuthResult>();
+    await connect();
+
+    if (_state != WebSocketState.authenticating) {
+      return const AuthResult.failure(
+        errorCode: AuthErrorCode.unknown,
+        errorMessage: 'Failed to connect to server',
+      );
+    }
+
+    sendAuth(channelId: channelId, apiKey: apiKey);
+
+    try {
+      return await _authCompleter!.future.timeout(
+        const Duration(seconds: 10),
+        onTimeout: () => const AuthResult.failure(
+          errorCode: AuthErrorCode.unknown,
+          errorMessage: 'Authentication timed out',
+        ),
+      );
+    } catch (e) {
+      return AuthResult.failure(
+        errorCode: AuthErrorCode.unknown,
+        errorMessage: e.toString(),
+      );
+    }
+  }
+
+  /// Send authentication message to relay
+  void sendAuth({required String channelId, String? apiKey}) {
+    if (_channel == null) {
+      _logger.w('Cannot send auth: not connected');
+      return;
+    }
+    final message = WebSocketMessage.auth(channelId: channelId, apiKey: apiKey);
+    _channel?.sink.add(jsonEncode(message.toJson()));
+  }
+
   /// Disconnect from the WebSocket server
   void disconnect() {
     _pingTimer?.cancel();
-    _reconnectTimer?.cancel();
+    _reconnectStrategy.cancel();
     _channel?.sink.close();
     _channel = null;
     _updateState(WebSocketState.disconnected);
@@ -144,7 +133,6 @@ class WebSocketManager {
       _logger.w('Cannot send message: not connected');
       return;
     }
-
     _channel?.sink.add(jsonEncode(message.toJson()));
   }
 
@@ -159,10 +147,7 @@ class WebSocketManager {
       type: MessageType.command,
       instanceId: instanceId,
       requestId: requestId,
-      data: {
-        'command': command,
-        'args': args,
-      },
+      data: {'command': command, 'args': args},
     ));
   }
 
@@ -175,18 +160,12 @@ class WebSocketManager {
     send(WebSocketMessage(
       type: MessageType.input,
       sessionId: sessionId,
-      data: {
-        'message': message,
-        'images': ?images,
-      },
+      data: {'message': message, if (images != null) 'images': images},
     ));
   }
 
   /// Send session control command (interrupt, clear)
-  void sendSessionControl({
-    required String sessionId,
-    required String action,
-  }) {
+  void sendSessionControl({required String sessionId, required String action}) {
     send(WebSocketMessage(
       type: MessageType.sessionControl,
       sessionId: sessionId,
@@ -199,14 +178,56 @@ class WebSocketManager {
       final json = jsonDecode(data as String) as Map<String, dynamic>;
       final message = WebSocketMessage.fromJson(json);
 
-      if (message.type == MessageType.pong) {
-        return; // Handled internally
+      if (message.type == MessageType.authSuccess) {
+        _handleAuthSuccess(message);
+        return;
       }
+      if (message.type == MessageType.authError) {
+        _handleAuthError(message);
+        return;
+      }
+      if (message.type == MessageType.pong) return;
 
       _messageController.add(message);
     } catch (e) {
       _logger.e('Failed to parse message', error: e);
     }
+  }
+
+  void _handleAuthSuccess(WebSocketMessage message) {
+    _logger.i('Authentication successful');
+    _updateState(WebSocketState.connected);
+    _startPingTimer();
+
+    final instances = message.data['instances'] as List<dynamic>?;
+    final result = AuthResult.success(
+      instances: instances?.cast<Map<String, dynamic>>(),
+    );
+
+    _authResultController.add(result);
+    _authCompleter?.complete(result);
+    _authCompleter = null;
+  }
+
+  void _handleAuthError(WebSocketMessage message) {
+    final code = message.data['code'] as String?;
+    final errorMessage = message.data['message'] as String?;
+    _logger.e('Authentication failed: $code - $errorMessage');
+    _authFailed = true;
+    _updateState(WebSocketState.error);
+
+    final errorCode = switch (code) {
+      'INVALID_CHANNEL' => AuthErrorCode.invalidChannel,
+      'INVALID_API_KEY' => AuthErrorCode.invalidApiKey,
+      'RATE_LIMITED' => AuthErrorCode.rateLimited,
+      _ => AuthErrorCode.unknown,
+    };
+    final result = AuthResult.failure(errorCode: errorCode, errorMessage: errorMessage);
+    _authResultController.add(result);
+    _authCompleter?.complete(result);
+    _authCompleter = null;
+    _channel?.sink.close();
+    _channel = null;
   }
 
   void _onError(Object error) {
@@ -218,6 +239,15 @@ class WebSocketManager {
   void _onDone() {
     _logger.i('WebSocket connection closed');
     _pingTimer?.cancel();
+
+    if (_state == WebSocketState.authenticating && _authCompleter != null) {
+      _authCompleter?.complete(const AuthResult.failure(
+        errorCode: AuthErrorCode.unknown,
+        errorMessage: 'Connection closed during authentication',
+      ));
+      _authCompleter = null;
+    }
+
     if (_state != WebSocketState.disconnected) {
       _updateState(WebSocketState.disconnected);
       _scheduleReconnect();
@@ -230,36 +260,26 @@ class WebSocketManager {
   }
 
   void _scheduleReconnect() {
-    if (_reconnectAttempts >= AppConstants.maxReconnectAttempts) {
+    if (_authFailed) {
+      _logger.w('Not reconnecting: authentication failed');
+      return;
+    }
+
+    if (_reconnectStrategy.exhausted) {
       _logger.w('Max reconnect attempts reached');
+      _updateState(WebSocketState.error);
       return;
     }
 
     _updateState(WebSocketState.reconnecting);
-    _reconnectAttempts++;
-
-    final delay = Duration(
-      milliseconds: (AppConstants.initialReconnectDelay.inMilliseconds *
-              (1 << (_reconnectAttempts - 1)))
-          .clamp(
-        AppConstants.initialReconnectDelay.inMilliseconds,
-        AppConstants.maxReconnectDelay.inMilliseconds,
-      ),
-    );
-
-    _logger.i('Scheduling reconnect in ${delay.inSeconds}s '
-        '(attempt $_reconnectAttempts)');
-
-    _reconnectTimer = Timer(delay, connect);
+    _logger.i('Scheduling reconnect (attempt ${_reconnectStrategy.attempts + 1})');
+    _reconnectStrategy.schedule(connect);
   }
 
   void _startPingTimer() {
     _pingTimer = Timer.periodic(const Duration(seconds: 30), (_) {
       if (_state == WebSocketState.connected) {
-        send(WebSocketMessage(
-          type: MessageType.ping,
-          data: {'timestamp': DateTime.now().millisecondsSinceEpoch},
-        ));
+        send(WebSocketMessage.ping());
       }
     });
   }
@@ -267,8 +287,10 @@ class WebSocketManager {
   /// Dispose resources
   void dispose() {
     disconnect();
+    _reconnectStrategy.dispose();
     _stateController.close();
     _messageController.close();
+    _authResultController.close();
   }
 }
 

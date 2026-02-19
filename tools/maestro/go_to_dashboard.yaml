@@ -1,0 +1,15 @@
+# Cancel the edit form and explore dashboard
+appId: com.fspec.fspecMobile
+
+---
+# Tap Cancel to go back to dashboard
+- tapOn: "Cancel"
+- waitForAnimationToEnd
+- takeScreenshot: 01_dashboard
+
+# Check we're on dashboard
+- assertVisible: "fspec Mobile"
+
+# Look at the connection card - there should be a connect/disconnect button
+# Let's just take screenshots to understand the UI
+- takeScreenshot: 02_full_dashboard

@@ -1,0 +1,18 @@
+# Navigate back to dashboard and explore the app
+appId: com.fspec.fspecMobile
+
+---
+# Go back to dashboard
+- back
+- waitForAnimationToEnd
+
+# Take screenshot of dashboard
+- takeScreenshot: 01_dashboard
+
+# Check if we have the connection
+- assertVisible: "Local Dev Server"
+
+# Tap on the connection to connect
+- tapOn: "Local Dev Server"
+- waitForAnimationToEnd
+- takeScreenshot: 02_after_tap_connection

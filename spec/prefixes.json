@@ -19,6 +19,11 @@
       "prefix": "MOBILE",
       "description": "Mobile app features and core functionality",
       "createdAt": "2026-02-19T00:08:15.215Z"
+    },
+    "DEV": {
+      "prefix": "DEV",
+      "description": "Development tools and local testing infrastructure",
+      "createdAt": "2026-02-19T04:52:38.247Z"
     }
   }
 }
