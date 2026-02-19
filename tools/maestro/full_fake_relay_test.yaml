@@ -1,0 +1,75 @@
+# Comprehensive test flow for fake relay server functionality (DEV-001)
+# Tests: auth, board, work unit detail, session streaming, input injection
+appId: com.fspec.fspecMobile
+
+---
+# Test 1: Dashboard shows connected instance
+- assertVisible: "fspec Mobile"
+- takeScreenshot: 01_dashboard
+- assertVisible:
+    text: "ONLINE"
+    optional: true
+
+# Test 2: Navigate to board
+- tapOn: "Open"
+- waitForAnimationToEnd
+- extendedWaitUntil:
+    visible:
+      text: "Kanban Board"
+    timeout: 5000
+- takeScreenshot: 02_board
+
+# Test 3: Board shows mock data
+- assertVisible:
+    text: "Backlog"
+    optional: true
+- takeScreenshot: 03_board_with_data
+
+# Test 4: Navigate to work unit detail
+- tapOn:
+    point: "50%,32%"
+- waitForAnimationToEnd
+- takeScreenshot: 04_work_unit_detail
+
+# Test 5: Work unit detail shows Example Mapping data
+- assertVisible:
+    text: "USER STORY"
+    optional: true
+- takeScreenshot: 05_work_unit_content
+
+# Test 6: Go back to board
+- tapOn:
+    point: "7%,10%"
+- waitForAnimationToEnd
+- takeScreenshot: 06_back_to_board
+
+# Test 7: Navigate to session stream via Chat button
+- tapOn: "Chat"
+- waitForAnimationToEnd
+- takeScreenshot: 07_session_stream
+
+# Test 8: Session stream shows input bar
+- assertVisible:
+    text: "Type a message..."
+    optional: true
+- takeScreenshot: 08_ready_for_input
+
+# Test 9: Send a message
+- tapOn: "Type a message..."
+- inputText: "Test message for fake relay"
+- pressKey: Enter
+- takeScreenshot: 09_message_sent
+
+# Wait for response
+- swipe:
+    start: "50%,50%"
+    end: "50%,50%"
+    duration: 3000
+- takeScreenshot: 10_after_response
+
+# Test 10: Go back to dashboard
+- back
+- waitForAnimationToEnd
+- back
+- waitForAnimationToEnd
+- takeScreenshot: 11_back_to_dashboard

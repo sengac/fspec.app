@@ -7,6 +7,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../data/models/board_data.dart';
 import '../../data/providers/board_providers.dart';
@@ -66,6 +67,12 @@ class _BoardScreenState extends ConsumerState<BoardScreen> {
     context.push('/work-unit/${widget.instanceId}/${workUnit.id}');
   }
 
+  void _onStartSession() {
+    // Generate a new session ID
+    final sessionId = const Uuid().v4();
+    context.push('/stream/${widget.instanceId}/$sessionId');
+  }
+
   @override
   Widget build(BuildContext context) {
     final boardAsync = ref.watch(boardProvider(widget.instanceId));
@@ -80,6 +87,11 @@ class _BoardScreenState extends ConsumerState<BoardScreen> {
             onPressed: _onRefresh,
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _onStartSession,
+        icon: const Icon(Icons.chat),
+        label: const Text('Chat'),
       ),
       body: Column(
         children: [

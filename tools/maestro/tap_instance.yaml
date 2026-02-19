@@ -6,13 +6,12 @@ appId: com.fspec.fspecMobile
 - assertVisible: "fspec Mobile"
 - takeScreenshot: 01_dashboard
 
-# Tap on the card header area (where the name is) - higher up to avoid buttons
-- tapOn:
-    point: "30%,47%"
+# Tap on the "Open" button to go to instance detail
+- tapOn: "Open"
 - waitForAnimationToEnd
-- takeScreenshot: 02_after_tap
+- takeScreenshot: 02_after_open
 
-# Wait a moment for navigation and board loading
+# Wait for navigation and board loading
 - extendedWaitUntil:
     visible:
       text: "Kanban Board"

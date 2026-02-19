@@ -1,0 +1,26 @@
+# Test work unit detail view from Kanban Board
+appId: com.fspec.fspecMobile
+
+---
+# Make sure we're on the board
+- assertVisible: "Kanban Board"
+- takeScreenshot: 01_board
+
+# Tap on first work unit card (using coordinates - first card is at ~32% from top)
+- tapOn:
+    point: "50%,32%"
+- waitForAnimationToEnd
+- takeScreenshot: 02_work_unit_detail
+
+# Wait for detail view to load (note: uppercase in UI)
+- extendedWaitUntil:
+    visible:
+      text: "USER STORY"
+    timeout: 5000
+- takeScreenshot: 03_detail_loaded
+
+# Scroll down to see more content
+- swipe:
+    start: "50%,70%"
+    end: "50%,30%"
+- takeScreenshot: 04_scrolled_down

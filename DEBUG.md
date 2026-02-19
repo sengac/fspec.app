@@ -270,6 +270,45 @@ open -a Simulator
 xcrun simctl io booted screenshot /tmp/screenshot.png
 ```
 
+### Handling Large Screenshots for Claude
+
+Claude has limits on image size:
+- **Max dimensions**: 8000 pixels (width or height)
+- **Max file size**: 5MB
+
+Use ImageMagick (installed via Homebrew) to process large screenshots:
+
+```bash
+# Check screenshot size
+stat -f "%z bytes" /tmp/screenshot.png
+sips -g pixelWidth -g pixelHeight /tmp/screenshot.png | grep pixel
+
+# Resize if over 8000px in any dimension (maintains aspect ratio)
+magick /tmp/screenshot.png -resize 4000x8000\> /tmp/screenshot_resized.png
+
+# Split a tall screenshot into multiple parts (e.g., 3 parts)
+magick /tmp/screenshot.png -crop 1x3@ +repage /tmp/screenshot_part_%d.png
+# Creates: screenshot_part_0.png, screenshot_part_1.png, screenshot_part_2.png
+
+# Split and resize in one command
+magick /tmp/screenshot.png -resize 2000x8000\> -crop 1x2@ +repage /tmp/part_%d.png
+
+# Compress if over 5MB
+magick /tmp/screenshot.png -quality 85 /tmp/screenshot_compressed.png
+
+# Combined: resize, compress, and split
+HEIGHT=$(sips -g pixelHeight /tmp/screenshot.png | grep pixelHeight | awk '{print $2}')
+if [ "$HEIGHT" -gt 8000 ]; then
+  PARTS=$(( (HEIGHT + 7999) / 8000 ))
+  magick /tmp/screenshot.png -crop 1x${PARTS}@ +repage /tmp/screenshot_part_%d.png
+fi
+```
+
+**Quick reference:**
+- `\>` after dimensions = only resize if larger (don't upscale)
+- `-crop 1x3@` = split into 3 vertical parts
+- `-quality 85` = JPEG-style compression for PNG
+
 ---
 
 ## Common Issues
@@ -323,12 +362,13 @@ in `add_connection_screen.dart` after successful save.
 
 1. **Start fake relay server:**
    ```bash
-   /tmp/fake_relay_server > /tmp/fake_relay.log 2>&1 &
+   screen -ls | grep relay || screen -dmS relay /tmp/fake_relay_server
    ```
 
 2. **Verify server is running:**
    ```bash
    curl -s http://127.0.0.1:8765
+   # Should return: "Fake Relay Server - Use WebSocket connection"
    ```
 
 3. **Start Flutter app:**
@@ -337,11 +377,11 @@ in `add_connection_screen.dart` after successful save.
    fvm flutter run -d "iPhone 16 Pro"
    ```
 
-4. **Run Maestro test:**
+4. **Run comprehensive test flow:**
    ```bash
    export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH:$HOME/.maestro/bin"
    export JAVA_HOME="/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"
-   maestro test tools/maestro/add_and_save_connection.yaml
+   maestro test tools/maestro/full_fake_relay_test.yaml
    ```
 
 5. **Check logs if issues:**
@@ -352,3 +392,51 @@ in `add_connection_screen.dart` after successful save.
    # App logs
    xcrun simctl spawn booted log show --predicate 'processImagePath contains "Runner"' --last 1m 2>&1 | grep -i "websocket\|error"
    ```
+
+---
+
+## Fake Relay Server Features (DEV-001)
+
+The fake relay server simulates the fspec relay protocol for manual testing.
+
+### Supported Features
+
+| Feature | Status | Description |
+|---------|--------|-------------|
+| Auth handshake | ✅ | Returns mock instances on auth success |
+| Board command | ✅ | Returns mock Kanban board with work units |
+| Work unit detail | ✅ | Returns Example Mapping data (user story, rules, examples, questions) |
+| Session streaming | ✅ | Streams thinking, tool calls, and text responses |
+| Input injection | ✅ | Accepts user messages and triggers mock AI response |
+| Session control | ✅ | Handles interrupt/clear commands |
+
+### Mock Data
+
+**Instances:** 2 mock instances (fspec-mobile, my-other-project)
+
+**Board columns:**
+- Backlog: 3 items (story, bug, task)
+- Specifying: 1 item
+- Testing: 1 item
+- Implementing: 1 item
+- Done: 2 items
+- Blocked: 1 item
+
+**Work unit detail:**
+- User story with role/action/benefit
+- 2 rules
+- 2 examples (HAPPY PATH, EDGE CASE)
+- 1 question with @mention
+
+**Session streaming:**
+- Thinking blocks (3 phases)
+- Tool call (Bash with find command)
+- Streamed text response
+
+### Navigation Flow
+
+```
+Dashboard → Open → Board → Work Unit Card → Detail
+                       ↓
+                    Chat → Session Stream
+```
